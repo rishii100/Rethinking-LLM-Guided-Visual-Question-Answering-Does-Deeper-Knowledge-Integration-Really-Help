@@ -2,8 +2,6 @@
 
 **ADCIS 2026 · arXiv: [2610.17079](https://arxiv.org/abs/2610.17079)**
 
----
-
 ## Key Findings
 
 | Strategy | Exact Match (%) | Edit Similarity (%) | Token F1 (%) | BERTScore |
