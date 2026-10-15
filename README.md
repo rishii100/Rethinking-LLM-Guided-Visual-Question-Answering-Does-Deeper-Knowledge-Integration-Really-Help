@@ -1,6 +1,6 @@
 # Rethinking LLM-Guided Visual Question Answering: Does Deeper Knowledge Integration Really Help?
 
-**ADCIS 2026 · Paper ID 865 · arXiv: [2610.17079](https://arxiv.org/abs/2610.17079)**
+**ADCIS 2026 · arXiv: [2610.17079](https://arxiv.org/abs/2610.17079)**
 
 > Does deeper knowledge integration always improve visual question answering? In our data-scarce OK-VQA experiments, **late fusion achieved 39.44% exact match**, outperforming attention-level injection (31.80%) by **7.64 percentage points**.
 
