@@ -115,7 +115,6 @@ pip install torch torchvision transformers pillow python-Levenshtein tqdm scikit
    - **"# Baseline"** — ViT + T5, no guidance
    - **"# Using FLAN-T5-LARGE Decoder"** — Late fusion variant
    - **"## Attention modification"** — Deep attention injection
-   - **"# Residual Connections"** — Residual guidance injection
 
 ---
 
