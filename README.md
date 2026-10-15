@@ -2,10 +2,6 @@
 
 **ADCIS 2026 · arXiv: [2610.17079](https://arxiv.org/abs/2610.17079)**
 
-> Does deeper knowledge integration always improve visual question answering? In our data-scarce OK-VQA experiments, **late fusion achieved 39.44% exact match**, outperforming attention-level injection (31.80%) by **7.64 percentage points**.
-
-[Read the paper on arXiv](https://arxiv.org/abs/2610.17079) · [Hugging Face model repository](https://huggingface.co/rishii100/knowledge-guided-vqa-models)
-
 ---
 
 ## Key Findings
