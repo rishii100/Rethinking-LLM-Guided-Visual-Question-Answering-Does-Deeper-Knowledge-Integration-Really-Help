@@ -4,8 +4,6 @@
 
 > Does deeper knowledge integration always improve visual question answering? In our data-scarce OK-VQA experiments, **late fusion achieved 39.44% exact match**, outperforming attention-level injection (31.80%) by **7.64 percentage points**.
 
-**Authors:** Aneerban Saha, Vijay Kumar, Sameer Madhav D., Priyam Srivastava, Dhruv Bansal
-
 [Read the paper on arXiv](https://arxiv.org/abs/2610.17079) · [Hugging Face model repository](https://huggingface.co/rishii100/knowledge-guided-vqa-models)
 
 ---
