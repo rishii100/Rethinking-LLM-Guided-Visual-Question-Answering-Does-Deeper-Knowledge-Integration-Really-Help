@@ -111,7 +111,7 @@ pip install torch torchvision transformers pillow python-Levenshtein tqdm scikit
    The `okvqa_llm_augmented.json` contains pre-generated LLM guidance. To regenerate, run `Data_Creation.ipynb`.
 
 3. **Train & evaluate:**
-   Open `Copy_of_research_decoder_(1).ipynb` in Google Colab and run the desired section:
+   Open `Final Code.ipynb` in Google Colab and run the desired section:
    - **"# Baseline"** — ViT + T5, no guidance
    - **"# Using FLAN-T5-LARGE Decoder"** — Late fusion variant
    - **"## Attention modification"** — Deep attention injection
