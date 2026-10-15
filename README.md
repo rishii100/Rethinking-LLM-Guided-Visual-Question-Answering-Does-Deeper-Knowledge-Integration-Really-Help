@@ -80,19 +80,13 @@ The current repository is notebook-led. The notebooks below contain the experime
 
 ```text
 .
-├── Copy_of_research_decoder_(1).ipynb       # Main experiments / model variants
-├── Data_Creation.ipynb                      # LLM guidance and data augmentation pipeline
+├── Data_Creation.ipynb                       # LLM guidance and data augmentation pipeline
 ├── Attention_Modification.ipynb              # Deep attention-injection experiments
-├── new_attention_model_final_final.ipynb     # Attention model experiments
+├── Final Code.ipynb                          # Attention model experiments
 ├── okvqa_llm_augmented.json                  # Augmented OK-VQA data / guidance
-├── Paper_id_865/                             # Camera-ready paper and reviewer response
-├── paper graphs/                             # Figures used in the paper
-├── Presentation_Script.md                    # ADCIS 2026 presentation script
-├── Synopsis.pdf                              # Project synopsis
 ├── best_baseline_model.pth                   # Trained baseline checkpoint
 ├── best_fusion_model.pth                     # Trained late-fusion checkpoint
 ├── best_attention_model.pth                  # Trained attention-injection checkpoint
-└── qavit_model.pth                           # Additional QA-ViT checkpoint
 ```
 
 ## Dataset and Preprocessing
