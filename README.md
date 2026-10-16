@@ -2,6 +2,8 @@
 
 **ADCIS 2026 · arXiv: [2610.17079](https://arxiv.org/abs/2610.17079)**
 
+Does deeper integration of LLM-generated knowledge always improve Visual Question Answering (VQA)? This project compares decision-level late fusion with attention-matrix injection in a shared ViT + FLAN-T5 framework under data-scarce fine-tuning.
+
 ## Key Findings
 
 | Strategy | Exact Match (%) | Edit Similarity (%) | Token F1 (%) | BERTScore |
@@ -10,20 +12,27 @@
 | **Late fusion (shallow)** | **39.44** | **48.97** | **41.34** | **92.14** |
 | Attention injection (deep) | 31.80 | 42.66 | 33.33 | 91.00 |
 
-*These are results reported in the paper on the augmented, top-500-filtered OK-VQA validation subset. They are not official full-benchmark leaderboard results.*
+*These are the paper's reported results on an augmented, top-500-filtered OK-VQA validation subset. They are not official full-benchmark leaderboard results.*
 
-- **Guidance helps in this setup:** late fusion improves exact match by 10.00 percentage points over the no-guidance baseline.
-- **Shallow integration wins in this data regime:** late fusion exceeds attention injection by 7.64 exact-match points and also scores higher on Edit Similarity, Token F1, and BERTScore.
-- **Question type matters:** the per-question-type analysis reports that attention injection is weaker on “Who” and “Yes/No” questions, while late fusion improves over the baseline across the reported categories.
-- **Training data is scarce:** the filtered dataset contains 3,144 training samples before question-paraphrase augmentation; the augmentation pipeline expands it to approximately 36,000 samples.
+- **Late fusion improves exact match by 10.00 percentage points** over the no-guidance baseline.
+- **Late fusion beats attention injection by 7.64 exact-match points** and scores higher on the other reported metrics in this experimental setting.
+- **Question type matters:** the paper's per-question-type analysis finds attention injection particularly weak on “Who” and “Yes/No” questions, while late fusion improves over the baseline across the reported categories.
+- **Data augmentation:** the filtered set contains 3,144 samples before question-paraphrase augmentation. The Hugging Face dataset card reports 36,442 augmented samples.
 
-The findings do not mean deep integration is always inferior. They suggest that the integration strategy should be evaluated against the available data, model components, and question types.
+These findings do not mean deep integration is always inferior. They suggest that integration strategy should be evaluated in the context of the data regime, model components, and question types.
+
+## Research Paper and Resources
+
+- 📄 **Paper:** [arXiv:2610.17079](https://arxiv.org/abs/2610.17079)
+- 🤗 **Augmented dataset:** [OK-VQA LLM-Augmented Dataset on Hugging Face](https://huggingface.co/datasets/rishii100/okvqa-llm-augmented)
+- 🤖 **Trained checkpoints:** [Knowledge-Guided VQA Models on Hugging Face](https://huggingface.co/rishii100/knowledge-guided-vqa-models)
+- 💻 **Code and experiments:** this GitHub repository
 
 ## Overview
 
-Knowledge-based visual question answering (VQA) requires a model to combine visual information with external facts or commonsense. This project studies how LLM-generated guidance should be integrated into a vision-language architecture under data-scarce fine-tuning.
+Knowledge-based VQA requires a model to combine image content with external facts and commonsense. This project studies how LLM-generated guidance should be integrated into a vision-language architecture under data-scarce fine-tuning.
 
-The framework compares three variants using a shared ViT + FLAN-T5 backbone: a no-guidance baseline, decision-level late fusion, and attention-matrix injection.
+The framework compares three variants built around a shared ViT + FLAN-T5 backbone: a no-guidance baseline, decision-level late fusion, and attention-matrix injection.
 
 ## Architecture
 
@@ -40,21 +49,18 @@ Guidance is generated offline and cached, so the trained VQA model does not need
 
 ### 2. Integration strategies
 
-**Baseline — no guidance**
-
+**Baseline — no guidance**  
 The ViT encodes the image. Its global CLS representation is projected and passed as a prefix alongside the question representation to the FLAN-T5 answer generator.
 
-**Strategy A — late fusion (shallow integration)**
+**Strategy A — late fusion (shallow integration)**  
+The global ViT CLS representation is combined with the guidance vector and projected before answer decoding. The guidance influences answer generation without changing the ViT's visual feature extraction.
 
-The model concatenates the global ViT CLS representation with the guidance vector, projects the result, and passes it to FLAN-T5. The guidance affects answer generation without modifying the ViT's visual feature extraction.
-
-**Strategy B — attention injection (deep integration)**
-
-The guidance vector modifies the query and key projections in the last six ViT encoder layers through learned projections and gates. This directly changes attention over image patches.
+**Strategy B — attention injection (deep integration)**  
+The guidance vector modifies the query and key projections in the last six ViT encoder layers through learned projections and gates, changing attention over image patches.
 
 ### 3. Answer generation
 
-**FLAN-T5-small** generates the answer as text. The same overall backbone is used to compare the alternative guidance-integration strategies.
+**FLAN-T5-small** generates the answer as text. The shared backbone helps make the integration strategy the main variable in the comparison.
 
 ## Model Components
 
@@ -68,50 +74,75 @@ The guidance vector modifies the query and key projections in the last six ViT e
 
 ## Repository Structure
 
-The current repository is notebook-led. The notebooks below contain the experiments and data-preparation workflows; filenames are retained as they currently exist in the repository.
+The repository is currently notebook-led. The following files are present in the repository root:
 
 ```text
 .
-├── Data_Creation.ipynb                       # LLM guidance and data augmentation pipeline
-├── Attention_Modification.ipynb              # Deep attention-injection experiments
-├── Final Code.ipynb                          # Attention model experiments
-├── okvqa_llm_augmented.json                  # Augmented OK-VQA data / guidance
-├── best_baseline_model.pth                   # Trained baseline checkpoint
-├── best_fusion_model.pth                     # Trained late-fusion checkpoint
-├── best_attention_model.pth                  # Trained attention-injection checkpoint
+├── Data_Creation.ipynb          # LLM guidance generation and data augmentation
+├── Attention_Modification.ipynb # Deep attention-injection experiments
+├── Final Code.ipynb             # Main model experiments
+├── okvqa_llm_augmented.json     # Augmented OK-VQA data / guidance
+├── LICENSE
+└── README.md
 ```
+
+The trained checkpoints are linked from the Hugging Face model repository rather than listed as files in this structure.
 
 ## Dataset and Preprocessing
 
-- **Benchmark:** [OK-VQA](https://okvqa.allenai.org/), which contains questions requiring knowledge beyond the visible image content.
-- **Images:** MS COCO Train 2014 images.
-- **Answer filtering:** retain the 500 most frequent answer classes, giving 3,144 filtered training samples before augmentation (approximately six examples per class).
-- **Augmentation:** paraphrase each question while keeping the image and target answer unchanged. The filtered training set expands to approximately 36,000 samples.
-- **Split:** image-level 80/20 train/validation split with no image overlap, as described in the paper.
+- **Benchmark:** [OK-VQA](https://okvqa.allenai.org/), which contains questions that require knowledge beyond the visible image content.
+- **Images:** MS COCO 2014 Train images.
+- **Answer filtering:** the top 500 answer classes produce 3,144 filtered training samples before augmentation (approximately six samples per class).
+- **Augmentation:** questions are paraphrased while the associated image and target answer are intended to remain unchanged. The dataset card reports 36,442 augmented samples.
+- **Split:** the paper describes an image-level 80/20 train/validation split with no image overlap.
 
-The notebooks may expect data files and image folders at specific paths. Check the path/configuration cells at the top of each notebook and adjust them to your Colab or local environment.
+### Load the hosted dataset
+
+Install the Hugging Face `datasets` library:
+
+```bash
+pip install datasets
+```
+
+Then load the dataset:
+
+```python
+from datasets import load_dataset
+
+dataset = load_dataset("rishii100/okvqa-llm-augmented")
+sample = dataset["train"][0]
+
+print("Question:", sample["question"])
+print("Answer:", sample["answer"])
+print("Visual focus:", sample["visual_focus"])
+print("Knowledge:", sample["knowledge"])
+```
+
+Refer to the [Hugging Face dataset card](https://huggingface.co/datasets/rishii100/okvqa-llm-augmented) for the schema and dataset-specific usage information.
+
+The notebooks may expect data files and image folders at specific paths. Check the path/configuration cells and adjust them for your Colab or local environment.
 
 ## Setup
 
-The experiments were run in Google Colab on a single NVIDIA GPU (T4/L4-class hardware, depending on the run). A compatible GPU is recommended for training; inference and smaller tests may work on CPU but will be slower.
+The experiments were run in Google Colab on a single NVIDIA GPU (T4/L4-class hardware, depending on the run). A compatible GPU is recommended for training; inference and smaller tests may run on CPU but will be slower.
 
 Install the core dependencies:
 
 ```bash
-pip install torch torchvision transformers sentencepiece pillow python-Levenshtein tqdm scikit-learn bert-score
+pip install torch torchvision transformers sentencepiece pillow python-Levenshtein tqdm scikit-learn bert-score datasets
 ```
 
-Depending on the notebook and environment, additional packages or access to model files may be needed. Check the import/setup cells before running all experiments.
+Additional packages or model access may be required depending on the notebook and environment. Review the import/setup cells before running the experiments.
 
 ## Quick Start
 
-### 1. Open the notebook environment
+### 1. Open the notebooks
 
 Open the relevant `.ipynb` file in Google Colab or Jupyter and select a compatible runtime. The notebooks are the current source of the training and experimental workflows.
 
 ### 2. Prepare the COCO images
 
-Download and extract the MS COCO Train 2014 images if they are not already available in your environment:
+Download and extract the MS COCO Train 2014 images if they are not already available:
 
 ```bash
 wget https://images.cocodataset.org/zips/train2014.zip
@@ -122,24 +153,25 @@ Place the extracted image directory where the notebook's dataset configuration e
 
 ### 3. Prepare the augmented data
 
-Use `okvqa_llm_augmented.json` if you intend to work with the prepared augmented guidance data. To regenerate or modify this data, inspect `Data_Creation.ipynb`; the generation workflow may require the appropriate model access and configuration.
+Use `okvqa_llm_augmented.json` or load the hosted [Hugging Face dataset](https://huggingface.co/datasets/rishii100/okvqa-llm-augmented). To regenerate or modify the augmentation, inspect `Data_Creation.ipynb`; the workflow may require the appropriate model access and configuration.
 
 ### 4. Train or evaluate a variant
 
-- **Baseline and late-fusion experiments:** start with `Copy_of_research_decoder_(1).ipynb` and identify the relevant baseline/fusion sections.
-- **Attention injection:** use `Attention_Modification.ipynb` or `new_attention_model_final_final.ipynb` for the deep-integration implementation and experiments.
+- **Main model experiments:** start with `Final Code.ipynb` and inspect its sections for the intended baseline and fusion runs.
+- **Attention injection:** use `Attention_Modification.ipynb` for the deep-integration experiments.
+- **Data and guidance preparation:** use `Data_Creation.ipynb`.
 
-The notebook sections, file paths, checkpoints, and runtime configuration should be checked before running. The repository is currently notebook-based; it does not yet provide a single, stable command-line entry point for reproducing every experiment.
+Notebook sections, file paths, checkpoints, and runtime configuration should be checked before running. The repository does not currently provide a single, stable command-line entry point for reproducing every experiment.
 
 ## Checkpoints
 
-The trained checkpoints are also listed in the [Hugging Face model repository](https://huggingface.co/rishii100/knowledge-guided-vqa-models):
+Trained checkpoints are available from the [Hugging Face model repository](https://huggingface.co/rishii100/knowledge-guided-vqa-models):
 
-- `best_baseline_model.pth`
-- `best_fusion_model.pth`
-- `best_attention_model.pth`
+- `best_baseline_model.pth` — baseline (no guidance)
+- `best_fusion_model.pth` — late fusion
+- `best_attention_model.pth` — attention injection
 
-To load a checkpoint, instantiate the matching model class first and then load its state dictionary. The checkpoint alone is not a standalone inference pipeline; the model definition, tokenizer/preprocessing, and compatible pretrained components must match those used during training.
+A checkpoint is not a standalone inference pipeline. Instantiate the corresponding model class and ensure that the model definition, tokenizer/preprocessing, and pretrained components match those used during training.
 
 ## Evaluation Metrics
 
@@ -148,20 +180,11 @@ To load a checkpoint, instantiate the matching model class first and then load i
 - **Token F1:** token-level precision/recall F1.
 - **BERTScore:** semantic similarity measured using contextual embeddings.
 
-For result comparisons, use the same dataset filtering, image-level split, answer normalization, and evaluation implementation across variants.
-
-## Paper
-
-**Title:** Rethinking LLM-Guided Visual Question Answering: Does Deeper Knowledge Integration Really Help?
-
-- **arXiv:** [https://arxiv.org/abs/2610.17079](https://arxiv.org/abs/2610.17079)
-- **Conference:** Accepted at ADCIS 2026
-- **Conference paper ID:** 865
-- **Primary category:** Computer Vision and Pattern Recognition (`cs.CV`)
+For comparisons, keep dataset filtering, the image-level split, answer normalization, and evaluation implementation consistent across variants.
 
 ## Citation
 
-Please cite the arXiv version when referencing this work:
+If you use this work, please cite the arXiv version:
 
 ```bibtex
 @misc{saha2026rethinkingvqa,
@@ -175,6 +198,8 @@ Please cite the arXiv version when referencing this work:
 }
 ```
 
-## License and Usage
+**Publication status:** Accepted at ADCIS 2026 · Conference paper ID 865.
 
-This repository is marked as MIT licensed.
+## License and Third-Party Resources
+
+This repository includes a `LICENSE` file declaring the MIT License. That notice does not override the terms or rights associated with third-party models, datasets, annotations, or images. Check the relevant upstream terms before redistributing or using third-party assets, including the OK-VQA-derived data and MS COCO images.
