@@ -1,6 +1,6 @@
 # Rethinking LLM-Guided Visual Question Answering: Does Deeper Knowledge Integration Really Help?
 
-arXiv: [2610.17079](https://arxiv.org/abs/2610.17079)**
+**arXiv: [2610.17079](https://arxiv.org/abs/2610.17079)**
 
 Does deeper integration of LLM-generated knowledge always improve Visual Question Answering (VQA)? This project compares decision-level late fusion with attention-matrix injection in a shared ViT + FLAN-T5 framework under data-scarce fine-tuning.
 
