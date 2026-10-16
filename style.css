@@ -1,6 +1,7 @@
 /* ==========================================================================
    Project Page Stylesheet: Rethinking LLM-Guided Visual Question Answering
-   Style: Formal, Classic Academic (Oxford Navy & Slate Palette)
+   Theme: Formal & Classic Academic (Oxford Navy, Slate, & Charcoal)
+   Note: All purple/violet accents and browser visited-purple strictly eliminated
    ========================================================================== */
 
 :root {
@@ -12,27 +13,28 @@
   --border-color: #e2e8f0;
   --border-subtle: #cbd5e1;
   
-  --text-primary: #0f172a;       /* Deep obsidian / slate-900 */
+  --text-primary: #0f172a;       /* Deep Obsidian Slate */
   --text-secondary: #334155;     /* Slate-700 */
   --text-muted: #64748b;         /* Slate-500 */
-  --text-link: #1e40af;          /* Classic Oxford Blue */
+  --text-link: #1d4ed8;          /* Academic Navy Blue */
+  --text-link-hover: #0f2b46;
   
-  --brand-primary: #1e3a8a;      /* Oxford Navy */
-  --brand-secondary: #2563eb;    /* Deep Blue Accent */
+  --brand-primary: #0f2b46;      /* Classic Deep Oxford Navy */
+  --brand-secondary: #1e40af;    /* Crisp Academic Blue */
   --brand-border: #93c5fd;
   
-  --success: #047857;            /* Formal Forest Green */
-  --success-bg: #f0fdf4;
-  --success-border: #bbf7d0;
+  --success: #065f46;            /* Classic Forest Green */
+  --success-bg: #ecfdf5;
+  --success-border: #a7f3d0;
   
-  --warning: #b45309;            /* Amber */
+  --warning: #92400e;            /* Warm Amber */
   --warning-bg: #fffbeb;
   
-  --danger: #b91c1c;             /* Crimson */
+  --danger: #991b1b;             /* Deep Crimson */
   --danger-bg: #fef2f2;
   
-  --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
-  --card-shadow-hover: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --card-shadow: 0 1px 3px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03);
+  --card-shadow-hover: 0 4px 10px rgba(15, 23, 42, 0.08);
   
   --code-bg: #0f172a;
   --code-text: #f8fafc;
@@ -49,15 +51,16 @@
   /* Color Palette - Classic Academic (Dark Mode) */
   --bg-primary: #0b0f17;
   --bg-secondary: #111827;
-  --bg-tertiary: #1f2937;
-  --bg-card: #131b2a;
-  --border-color: #243046;
+  --bg-tertiary: #1e293b;
+  --bg-card: #131d2e;
+  --border-color: #24344d;
   --border-subtle: #334155;
   
   --text-primary: #f8fafc;
   --text-secondary: #cbd5e1;
   --text-muted: #94a3b8;
   --text-link: #60a5fa;
+  --text-link-hover: #93c5fd;
   
   --brand-primary: #60a5fa;
   --brand-secondary: #3b82f6;
@@ -67,11 +70,11 @@
   --success-bg: rgba(6, 78, 59, 0.25);
   --success-border: rgba(52, 211, 153, 0.3);
   
-  --warning-bg: rgba(180, 83, 9, 0.2);
-  --danger-bg: rgba(185, 28, 28, 0.2);
+  --warning-bg: rgba(146, 64, 14, 0.2);
+  --danger-bg: rgba(153, 27, 27, 0.2);
   
-  --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
-  --card-shadow-hover: 0 4px 12px 0 rgba(0, 0, 0, 0.6);
+  --card-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  --card-shadow-hover: 0 4px 14px rgba(0, 0, 0, 0.6);
   
   --code-bg: #050811;
   --code-text: #f1f5f9;
@@ -94,8 +97,18 @@ html {
 }
 
 body {
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
   overflow-x: hidden;
+}
+
+/* Global Link Protection - Explicitly prevent browser default purple visited state */
+a, a:visited {
+  color: var(--text-link);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--text-link-hover);
 }
 
 /* Container */
@@ -111,13 +124,13 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(255, 255, 255, 0.98);
   border-bottom: 1px solid var(--border-color);
   transition: var(--transition);
 }
 
 [data-theme="dark"] .navbar {
-  background-color: rgba(11, 15, 23, 0.95);
+  background-color: rgba(11, 15, 23, 0.98);
 }
 
 .nav-container {
@@ -137,9 +150,13 @@ body {
   color: var(--text-primary);
 }
 
+.nav-brand:visited {
+  color: var(--text-primary);
+}
+
 .brand-badge {
   background: var(--brand-primary);
-  color: #ffffff;
+  color: #ffffff !important;
   font-size: 0.75rem;
   font-weight: 700;
   padding: 0.25rem 0.65rem;
@@ -148,7 +165,7 @@ body {
 }
 
 [data-theme="dark"] .brand-badge {
-  background: #1e40af;
+  background: #1e3a8a;
 }
 
 .brand-title {
@@ -163,8 +180,7 @@ body {
   gap: 1.75rem;
 }
 
-.nav-links a {
-  text-decoration: none;
+.nav-links a, .nav-links a:visited {
   color: var(--text-secondary);
   font-size: 0.88rem;
   font-weight: 500;
@@ -172,7 +188,7 @@ body {
 }
 
 .nav-links a:hover {
-  color: var(--text-link);
+  color: var(--brand-secondary);
 }
 
 .theme-btn {
@@ -195,7 +211,7 @@ body {
 
 /* Hero Section */
 .hero-section {
-  padding: 4rem 0 3rem;
+  padding: 4.25rem 0 3.25rem;
   text-align: center;
   border-bottom: 1px solid var(--border-color);
   background: var(--bg-primary);
@@ -207,7 +223,7 @@ body {
   gap: 0.6rem;
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  padding: 0.35rem 0.9rem;
+  padding: 0.35rem 0.95rem;
   border-radius: var(--radius-full);
   font-size: 0.84rem;
   font-weight: 600;
@@ -215,7 +231,7 @@ body {
   margin-bottom: 1.75rem;
 }
 
-.conference-pill a {
+.conference-pill a, .conference-pill a:visited {
   color: var(--text-link);
   text-decoration: none;
 }
@@ -231,7 +247,7 @@ body {
 .hero-title {
   font-size: clamp(1.9rem, 3.8vw, 2.75rem);
   font-weight: 800;
-  line-height: 1.28;
+  line-height: 1.3;
   max-width: 960px;
   margin: 0 auto 1.5rem;
   letter-spacing: -0.025em;
@@ -239,10 +255,14 @@ body {
 }
 
 .title-sub {
-  color: var(--brand-primary);
+  color: var(--brand-secondary);
   font-weight: 700;
   display: inline-block;
   margin-top: 0.25rem;
+}
+
+[data-theme="dark"] .title-sub {
+  color: #60a5fa;
 }
 
 .authors-list {
@@ -253,7 +273,7 @@ body {
   line-height: 1.8;
 }
 
-.author a {
+.author a, .author a:visited {
   color: var(--text-primary);
   text-decoration: none;
   font-weight: 600;
@@ -262,7 +282,7 @@ body {
 }
 
 .author a:hover {
-  color: var(--text-link);
+  color: var(--brand-secondary);
   border-bottom-style: solid;
 }
 
@@ -281,7 +301,7 @@ body {
   margin-bottom: 3.5rem;
 }
 
-.btn {
+.btn, .btn:visited {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -293,34 +313,35 @@ body {
   transition: var(--transition);
 }
 
-.btn-primary {
+.btn-primary, .btn-primary:visited {
   background: var(--brand-primary);
-  color: #ffffff;
+  color: #ffffff !important;
   border: 1px solid var(--brand-primary);
 }
 
-[data-theme="dark"] .btn-primary {
+[data-theme="dark"] .btn-primary, [data-theme="dark"] .btn-primary:visited {
   background: #1e3a8a;
   border-color: #2563eb;
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .btn-primary:hover {
-  background: #172554;
-  border-color: #172554;
+  background: #091a2b;
+  border-color: #091a2b;
+  color: #ffffff !important;
   transform: translateY(-1px);
 }
 
-.btn-secondary {
+.btn-secondary, .btn-secondary:visited {
   background: var(--bg-card);
-  color: var(--text-primary);
+  color: var(--text-primary) !important;
   border: 1px solid var(--border-color);
 }
 
 .btn-secondary:hover {
   background: var(--bg-tertiary);
   border-color: var(--border-subtle);
-  color: var(--text-link);
+  color: var(--brand-secondary) !important;
   transform: translateY(-1px);
 }
 
@@ -353,19 +374,22 @@ body {
 }
 
 .metric-card.highlight {
-  border: 2px solid var(--brand-primary);
+  border: 2px solid var(--brand-secondary);
   background: var(--bg-card);
-  position: relative;
 }
 
 .metric-value {
-  font-size: 2.1rem;
+  font-size: 2.15rem;
   font-weight: 800;
-  color: var(--brand-primary);
+  color: var(--brand-secondary);
   line-height: 1;
   margin-bottom: 0.4rem;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.02em;
+}
+
+[data-theme="dark"] .metric-value {
+  color: #60a5fa;
 }
 
 .metric-label {
@@ -428,7 +452,7 @@ body {
 .abstract-highlight {
   background: var(--bg-tertiary);
   padding: 1.15rem 1.35rem;
-  border-left: 3px solid var(--brand-primary);
+  border-left: 3px solid var(--brand-secondary);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   color: var(--text-primary) !important;
 }
@@ -610,9 +634,14 @@ body {
 }
 
 .tab-btn.active {
-  color: var(--brand-primary);
+  color: var(--brand-secondary);
   background: var(--bg-card);
-  border-bottom: 2px solid var(--brand-primary);
+  border-bottom: 2px solid var(--brand-secondary);
+}
+
+[data-theme="dark"] .tab-btn.active {
+  color: #60a5fa;
+  border-bottom-color: #60a5fa;
 }
 
 .tab-content {
@@ -667,7 +696,7 @@ body {
 .status-badge.warning {
   background: var(--warning-bg);
   color: var(--warning);
-  border: 1px solid rgba(180, 83, 9, 0.3);
+  border: 1px solid rgba(146, 64, 14, 0.3);
 }
 
 .status-badge.neutral {
@@ -703,7 +732,7 @@ body {
   content: "•";
   position: absolute;
   left: 0.25rem;
-  color: var(--brand-primary);
+  color: var(--brand-secondary);
   font-weight: bold;
 }
 
@@ -833,7 +862,7 @@ body {
 }
 
 .insight-card:hover {
-  border-color: var(--brand-primary);
+  border-color: var(--brand-secondary);
   box-shadow: var(--card-shadow-hover);
 }
 
@@ -940,7 +969,7 @@ body {
   gap: 0.75rem;
 }
 
-.link-btn {
+.link-btn, .link-btn:visited {
   text-decoration: none;
   font-size: 0.82rem;
   font-weight: 600;
@@ -954,7 +983,7 @@ body {
 
 .link-btn:hover {
   border-color: var(--border-subtle);
-  color: var(--text-link);
+  color: var(--brand-secondary);
 }
 
 /* BibTeX */
@@ -1000,7 +1029,7 @@ body {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(15, 23, 42, 0.88);
   backdrop-filter: blur(4px);
 }
 
@@ -1067,14 +1096,14 @@ body {
   margin-top: 0.5rem;
 }
 
-.footer-links a {
+.footer-links a, .footer-links a:visited {
   color: var(--text-secondary);
   text-decoration: none;
   transition: var(--transition);
 }
 
 .footer-links a:hover {
-  color: var(--text-link);
+  color: var(--brand-secondary);
 }
 
 /* Responsive Media Queries */
@@ -1120,6 +1149,6 @@ body {
   
   .tab-btn.active {
     border-bottom: none;
-    border-left: 3px solid var(--brand-primary);
+    border-left: 3px solid var(--brand-secondary);
   }
 }
