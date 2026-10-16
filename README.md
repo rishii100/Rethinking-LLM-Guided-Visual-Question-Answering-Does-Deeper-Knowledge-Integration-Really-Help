@@ -26,7 +26,7 @@ These findings do not mean deep integration is always inferior. They suggest tha
 - 📄 **Paper:** [arXiv:2610.17079](https://arxiv.org/abs/2610.17079)
 - 🤗 **Augmented dataset:** [OK-VQA LLM-Augmented Dataset on Hugging Face](https://huggingface.co/datasets/rishii100/okvqa-llm-augmented)
 - 🤖 **Trained checkpoints:** [Knowledge-Guided VQA Models on Hugging Face](https://huggingface.co/rishii100/knowledge-guided-vqa-models)
-- 💻 **Code and experiments:** this GitHub repository
+- 💻 **Code and experiments:** [This GitHub repo](https://github.com/rishii100/Rethinking-LLM-Guided-Visual-Question-Answering-Does-Deeper-Knowledge-Integration-Really-Help)
 
 ## Overview
 
@@ -198,7 +198,7 @@ If you use this work, please cite the arXiv version:
 }
 ```
 
-**Publication status:** Accepted at ADCIS 2026 · Conference paper ID 865.
+**Publication status:** Accepted at ADCIS 2026.
 
 ## License and Third-Party Resources
 
